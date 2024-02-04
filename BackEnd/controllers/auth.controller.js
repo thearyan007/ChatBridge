@@ -48,9 +48,28 @@ export const signup = async (req, res) => {
   }
 };
 
-export const login = (req, res) => {
-  res.send("Login User");
-  console.log("Login User");
+export const login = async (req, res) => {
+  try {
+    const { userName, password } = req.body;
+    const currentUser = await User.findOne({ userName });
+    const isPassCorrect = await bcrypt.compare(
+      password,
+      currentUser?.password || ""
+    );
+    if (!currentUser || !isPassCorrect) {
+      return res.status(400).json({ error: "invalid Credential" });
+    }
+    generateWebToken(currentUser._id, res);
+    res.status(200).json({
+      _id: currentUser._id,
+      fullName: currentUser.fullName,
+      userName: currentUser.userName,
+      profilePic: currentUser.profilePic,
+    });
+  } catch (error) {
+    console.log("Error in the signin Controller" + error.message);
+    res.status(500).json({ error: "Internal Server Error!!" });
+  }
 };
 
 export const logout = (req, res) => {
