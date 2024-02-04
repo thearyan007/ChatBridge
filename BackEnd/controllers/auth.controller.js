@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";
+import generateWebToken from "../utils/genrateToken.js";
 
 export const signup = async (req, res) => {
   try {
@@ -26,13 +27,21 @@ export const signup = async (req, res) => {
       gender,
       profilePic: gender == "male" ? boyProfilePic : girlProfilePic,
     });
-    await newUser.save();
-    res.status(201).json({
-      _id: newUser._id,
-      fullName: newUser.fullName,
-      userName: newUser.userName,
-      profilePic: newUser.profilePic,
-    });
+
+    if (newUser) {
+      generateWebToken(newUser._id, res);
+
+      await newUser.save();
+
+      res.status(201).json({
+        _id: newUser._id,
+        fullName: newUser.fullName,
+        userName: newUser.userName,
+        profilePic: newUser.profilePic,
+      });
+    } else {
+      res.send(400).json({ error: "Invalid User Data" });
+    }
   } catch (error) {
     console.log("Error in the sigup Controller" + error.message);
     res.status(500).json({ error: "Internal Server Error!!" });
