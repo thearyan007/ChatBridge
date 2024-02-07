@@ -1,7 +1,5 @@
-import "./App.css";
 import Home from "./pages/home/home.jsx";
-import Login from "./pages/login/Login.jsx";
-import SignUp from "./pages/signup/signup.jsx";
+
 
 function App() {
 

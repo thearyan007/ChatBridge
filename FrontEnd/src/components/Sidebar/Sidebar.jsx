@@ -1,5 +1,7 @@
 import SearchInput from "../../components/Sidebar/SearchInput";
 import Conversations from "../../components/Sidebar/Conversations";
+import LogoutButton from "./LogoutButton";
+
 const Sidebar =()=>{
     return (
         <div className="border-r border-slate-500 p-4 flex flex-col">
@@ -8,7 +10,7 @@ const Sidebar =()=>{
             <div className="divider px-3"></div>
 
             <Conversations />
-            {/* <LogoutButton /> */}
+            <LogoutButton />
         </div>
     )
 }
