@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import Home from "./pages/home/home.jsx";
+import Home from "./pages/home/Home.jsx";
 import Login from "./pages/login/Login.jsx"
 import SignUp from "./pages/signup/signUp.jsx";
 import { Toaster } from "react-hot-toast";
