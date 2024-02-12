@@ -1,3 +1,4 @@
+import { getReceiverSocketId, io } from "../Socket/socket.js";
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
 
@@ -32,6 +33,12 @@ export const sendMessage = async (req, res) => {
 
     // this will run in parallel
     await Promise.all([conversation.save(), newMessage.save()]);
+
+    const socketReceiverId = getReceiverSocketId(receiverId);
+    if (socketReceiverId) {
+      // io.to(<socket_id>).emit() used to send events to specific client
+      io.to(socketReceiverId).emit("newMessage", newMessage);
+    }
 
     res.status(201).json(newMessage);
   } catch (error) {
